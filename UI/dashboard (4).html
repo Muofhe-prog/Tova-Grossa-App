@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+	<style>
+        .container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .profile-picture {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .search-bar {
+            flex: 1;
+        }
+
+        .search-bar input[type="text"] {
+            width: 50%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+        }
+
+        .search-bar button {
+            padding: 8px 15px;
+            background-color: skyblue;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    
+
+	
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #main {
+            display: flex;
+        }
+
+        #sidebar {
+    background-color: skyblue;
+    width: 200px;
+    padding: 10px;
+    height: 483px; /* Adjust the height as needed */
+    text-align: center;
+    font-style: italic;
+}
+
+
+        #content {
+            flex: 1;
+            padding: 10px;
+        }
+
+       
+
+        
+        .link {
+    color: black;
+    text-decoration: none;
+    display: block;
+    margin: 50px 0; /* Add margin here */
+    white-space: nowrap; /* Prevent line breaks */
+}
+
+
+        #small-boxes {
+            display: flex;
+        }
+
+        .small-box {
+            flex: 1;
+            height: 50px;
+            margin: 10px;
+            background-color: lightgrey;
+        }
+
+        #graph-container {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        #line-graph {
+            flex: 1;
+            height: 300px;
+            background-color: lightgrey;
+            margin-right: 100px;
+        }
+
+        #bar-graph {
+    flex: 1;
+    height: 300px;
+    background-color: lightgrey;
+    margin-top: 100px; /* Add margin-top here */
+}
+		
+		 #myChart {
+            max-width: 1000px;
+            margin: 50px auto;
+        }
+
+        .blue-box {
+            flex: 1;
+            height: 50px;
+            margin: 10px;
+            background-color: #D9D9D9;
+            border: 2px solid black;
+            color: #0096FF;
+            font-weight: bold;
+            font-size: 90%;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .blue-box:hover {
+            transform: scale(1.1);
+        }
+
+
+    </style>
+</head>
+
+<body>
+ <div class="container">
+ 
+ 
+        <img class="profile-picture" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAIYAwAMBIgACEQEDEQH/xAAbAAABBQEBAAAAAAAAAAAAAAAEAAECBQYDB//EAD8QAAECBAIGBwYFAwQDAQAAAAIBAwAEERIFIRMiMTJBYQYUQlFxgZEjUmKhscEkctHh8DOCkjRDU/EVssIH/8QAGQEAAgMBAAAAAAAAAAAAAAAAAgMAAQQF/8QAIxEAAgICAgICAwEAAAAAAAAAAAECEQMhEjEEQRMiMkJRI//aAAwDAQACEQMRAD8A8fiVIUKNgsmiQP24KFIFXfKKn6LQolSIpElgUXZ3bSDpWTKY/L9YHw6XKaeFoO1G0GQGVkxsHW+/8qsK8jNwjxXYzFj5O2UyNty4but2Rjmbb7usd1vxU+VYtXG2pfs6R2OJC46BX3F+UY5/ybt9mvgZyeQRPU1oeRUdMInbaUcsRCw9TVjrhzTm95jGhPVmdr7A88yTTxCY7uUQYd+G6LbFJNx2ZGwd4eW2mcAFKPtB7o/liWmi3FplthEzYe6Q/lKvyWNdKKLrO8PdcP3SPOGppyXPUK35xqMFxDrFvvRny4/Y/HJPQ/STBrzJ9ofa9oe/n4xkHBIDIT3o9WRBmmd39fBYyPSPBrLn2h1h3uad8N8byP1kKzYfZk46NwiCEKR0F2ZCMzuQmYd/ciLJRP2J6CUiDyw6a8ROGPoohDVh4UUQ6AsDFvwQEcVTXipei0RSJqm7EIMw+XKamWh+KAbpWWlZq+huGjZpz3i3eSd8XmImOt8I7vPuTypHXDmhlZC7dEfokV04ZXiR7uZl9kjkZJuc7ZvhClR0IGwZuuEi7RFs78/0jNYriFh23Oa26O6q86JsTxVYu8ac6hIDpdbVvIe9ckRPX6JGbwKTKfnCm5jW1ql9kSJjSrlIZK9RXYRhmCvzp6R32Y+7xXz4xpGOjzQW2Ol/OUHyo+5/jFxKMXxTyNvQ1YYxWyrTDWzMdLrWxGZw2WdC02tXZ6RflLWdmGSSv7MLudhpQPMMawUZd7UG0S9IBw0ikpkS3Su7Meg49I3skQbwxgMR9k8Lm7GiE3KNMz5Mai+SN5LLezpw3SKhfb+cobFJbSy1weNvP94F6MvdYk3Zb4aj4ps+cWi/0R9LYy3xkHJclZ5diLHV3iHsiWr4cP5ygVFjTdKsOK/Thu5oXfTan0WMwV0drDNSjaOZkjxkJ5NSObCx0cTUjizDH+QsKSIuQ6rEThjKGhoSxFEiEOzccD/rR2bSORb8VItEVjTdEZa+Zu90dXz/AIsZxBvONz0Xl+q4bp+04WrGTyJ8YDsUbkXOIvjodEG7bT02wKbfWAt7Wjr91+qxzeXeK67h86r8kWHZdKXeIj7Jf/Pd3Ry/R0EqK3ppcbIudkm0u+e2JdGmrJMfWLlx2Un2dG6NouVQbuC8UX5fxYrsJtkjdlnSt0JU/SCUrhxCgkp8jQSbcaPDw1Iy0piklprdLaXxCqJ6xpJWZYsuB0S/KVYqCaexk5Jlg63HIk1IgszfFVP451cyYl2tM/7vBPGLbuWgapbO83L378ec9J8P6u8Q9ksxjVGwU17fGJwhu3WhctRPJIq5+TYmAIZR0iEewRVpzReEGo8XYHNS+pn+jWKlJTNp9kvVNn6Ru2VbdDSNFc05n5rtRY8ucEpXEiEx5Rpei88/LvE2BXNEWsJbNlU8ImbFf2Ewm/xL/FJYZhnROjqlkRcUrsXyyWPOcSlSkpwmD3hJbh5fysenTD7cwG8LZe6XzSsYjpW3fMi5b2aEQ8YZ4eSpcQPIx2rKA9yBml14KIdSBW9+OnLtGEJWIEsOqxBYNsgkh1hqxKsWUIShJvlDtpDCntoqXRaLnCMNGaeYHe0gqvdsqn7eUaqZmBalhaaG3RjYIjwptX1rHDokAtYUUy7qiLi6IraqlaVy4oqon8220zItTrxdUdG3a4GdyEtNiLtRU+iRyPIlylRuwRqJU4c3eY37oiTjhcv4qwVNAJm0W7pBqV3mvrmieUGJh799ui6vLZaQiopnTYnJKRynXJYDK99tl0W6NaTOzhVUrmvLjGfbejRZRMOE7pWmrhIXKjyVEzrypksIp9sJkn5gf6bI6pbK1Wi+kT67JSTJDh4uTRWqhOuaqKq0VVWveqpB0nhDE1LWzYi464V5lsz5dyJsTwg1p36L3JaBGuk8pMezOTJ4bS1hBeCVWi7MkTvixw05Z0xdaammbs27hJBPmlUz2RIOiogAtBrMCV9l2rVdq09PRIvmZHqsmN+toRo3dUrPBV2eUPlODiKjjyKR3wt3rAEO6Q70V2LNTPVnXJTVK6l1qLSvGiqkEYQVk4XxDBkuVhlfu3dqM8Wk7NEk2jAOSc87Mk3iD8w8wRLboXNEq+SKu3nXjFlgHRZyS/EuvufCBZxt+rCftAt+VYZ9rRMkUMlkclSFwwpOzybpWzosYas3i/6i46IS98yRGPa+iVgDpeV+MS3vWl9UpF9gJDISbrm8WweZLn9aRc5P4wFH/RnScH8YTDW8Q1t7qZfrApdGcUmGfatDu/8AIioqeCLHB+aHrlpviJOUb1ss0XPOuedYs5gZaXZ/qkWjGmqS7OS1rCorjsKezF4vIO4bcxMNWlautdXKM/240XSGbKaeEda1saCRbfOM7246eNvgmznTVSOyrEYSxGsaGwKJLChyhIsGCTCOjbev/dSIVibTuvbC8j0FHs3uGMkGDi32RGpf5Ki/aOoARad+7WFxUK3IkRMs02psTNMoIwVojwfXLW0aoXpn9IqwecCfmbN7SKY+aIi/SOPPtnRxhb02+UmN8y5vHrXZ8KDXzWKGRYluvvzc3domyVAIiXwUlrBl5TAExohu39XJe9CRF7l+sUWIK5NTIsWuCwz/AMhZmvfSKxpt0HNpKzvPTRYk8JSjGhkWXNXheSUqq+uzhWNPhUxujGYxB42sF0HU3OrXUIrVRdq1JSpREWqIlU4LBWBTPsWhAiuEU3ttOFeeUOlFUVhnUqPUMPdb0NzsV2KTxOmTbW6O8XjwSK1qaf6t7IdbYPcnNYZialBC3rI3Xa1xJVV41jO23pGmSSYdhKN9f9q7aNu9BkyTDT29dduiOaqvhFewmGnrHb+YSp80zguUBsTIpSWIvjzX1Ja0i1BkZxNuZlQ07V3e413eEOWKaVnejniTmKBPsSjTTLZOCqkRVKwUyRVRKbVrx4LHDEWm5XSl2ionivFaRHcSJ30Y3GPa42Llt1reqPNVy+kEsTJWNDrFaXjnXP6wE68TuMPiAlcIoAj3qqItU9Ui96PANlx6xCS3D+3rBz6Eck5OiDYMNHo7XCmbd3Roq0XOqKv1/SB5WeKYuYmGib27xIpIqd9ERPlGncl+tB/6m2KIqeibOUVk1I3H+IEXC94aieWzJdvqsApJ9gtMxc+3opwmzHd3h/T6xRu6hlGpx1mx7SBcVw0IXBoqLwqkZeYT20dHFK4mHImpDqsRVYSrEaw5sUdySGhzhh+OHN0Ud20E98rYNwlgeuXHrW1UreXdzrT1gVqXK/3h94c4tpBrUdsuuuTVHbTNFWniqekZ80tDMa2aLo5PuGbonq3Dqjwoi/v8op5uacl5x0bt4ltLwVET+c4OZlRwiT13R0rlUEbs0ReHjFQ86409/SFwS1xuou1VrHOq3Zti6Qexi8sB/i2nLctYRr4qipmi+EXDayU+H4f2hbdaol5V2xXYbiMiH+okWbvyrVPCq/ROMHriGGncPVhG3MbW4GS1oJMrp2ZckD/BSZae1Q1nFBKLtRURc05LFQTrkvPNTpNaPSDo5loSqlU2EKdypTLgqLTakXk/Py1jTkwwJC43frZLS5U2ovKBZ+SYmpB1/DHSLR5k0WahRc1ReKUrDIOlsCSV2XuETg7twk05ul9IPNtjTC+bTd2witTNOfokYDC8Q6vMi3/tOZiPcXFPv5xt8NmxmgtMoXKLg7NEMiktmkw9JEjEup3EJItzeexKbPHOLQ54WgEZeVEbSK03OeXnlGbl5ObaP8I+TfukJfykELhs2f8AqJlwv7kSD+TXQXxwbskbl846VwuF/uH3qmSIi90ZHpligybJF2twB7y741zwtyEsRGQ7seOdI8S/8pPkX+0NbP1gcaeSewM0/jjo1EiUo1iWHjMaPROUPrLg1VurQ0yRFVUVUFFyVc6pSATxweuO6K5m0qNm2VyKncqbKc02wDLzX4OWdtIn220b1eSKiLyS1B80XlCGYY3tALZF2tGqovhVY0zimYot2XTHSJ8Hvd/tqnklUVPVYOdxx0GbtPL27NYTpsquysZZJpsztDSOfC22ieq7Y6zThXjeJDaOq2NKBXv7/GEvGmNU2TxSfKY9qejL3SGv3StIzUwuuUHzbz5mWlduitcjVijUdGfI7ex4isPEYaJClhlhUh0SNJRZS13U2tFddcV3lmn1i+ZnXMNlmn5t3SP2r7C7YmVCJfonNKxn8NmRlztMbh7Penh4xHERcmHtOBXNOFW67ZnxTh4Rjyq2NgWwvDMH+LdJ5pypiVyqraqipu1rTw8oNGWdvKWNpl60VNg7UJFWlUHkqpWnOKERHqYu6t3aIvtHfBm52dmdHLu2iyNbrlTRpwz5/OM7j/B1hMtigzBtNnLSTlxKlxMqicq0VMoNlJgXXtB/4WUF26jhayoFO9FWqeNYEnZqUF4im33G3e2LbdyKqbVREVOfGBZ/HSmAGWlBtaKgG6VEM0502J5qtOPCJV+iJlriZN4lPtS0owLgtjZddQUFFqRL3JVV76JSBXJmWkni0T5E+LivG7oxS9aZoiVqibcl79iQGxiIysgXVLhJ5ywi2rQc6J5rXyhMSjbrxEZCJFvF2Wx4qq+H1WIo0E5WA40yLU4+21qiLl4j3ISIqJypsiy6Nzrl4t3W+6XH94Am1669MzP+1kglyRURPlWGwYiaeEouSuJIamemsY05JW9bHV98dnn3R1f6USll1w/5V+UBYe+1NS2id/xKA5vBpS+5odH9IyWujayo6U4+5NSzotXC0WXNf0jFgOoTh+EaDpA1vCH9IfmsZ8dy2NeJUtGLO7kGS7hG9/aiW7E2JHV0m5c9crvmv7eEVyu9kP8AKDZeTvltLd2tb94YKu+iTCuX6eX/AMduXhxjThNFNSYuBLC5o9426VTxRYy7Tgy8zcF1sXKYqLRkTVo2jvjkq+KQuSYyDRXYwDF5E0NpdobaftFKaRb4jivWLvZN3W0vEafKKglhuK0ticrTehlhodYaGiwpYSw0OkaQCQrrwSLxWW7128PBfGB2kG+LDDMMmZ2falpEbnXN3uRE2qvJEjPlVoZHRGQk3MUeGUlB9qRVLaqAmzgmf3j07AujTGGyGjaG18szdIqka9+WxNtERPHOLHo3gEpgsmIyg6xf1XbdZxearmicsuUXmhKy4B3svPZT1yhNBcjxjpVgpNGToXEQlrW7KU2p94zbMs4e5rEOduVV8Oce6zuGsHdeJXF72xNuVc0Xn4R5zjvRl2XmX3JES9nnby40Tl9IHoJbMoJiOt2h3vstIOl160GjN8rdtvCvNIGdZ0p6QO1kQ8c4gFzR/FEoJaCrCaAmNW25N3jStKeqxNhdch0BOCO7bVF8cv8AqJSR9Ye0Z7xZXfEmafp5xxnAJo7mitISVLhKmS/z5xVBPqzZYT+KkCcw90XhbyJpygmC93cvjlDvzxNBa6JCVva+0YR9/UEbvzW/eEjk3Ja3tBH3SzT0WAlhTYyGdx7CcafcPVPtFFSQ6kaRyTbxJlqdl7hIRVCYLv21Fdqp4+vCKyYbHQ229qGR+qoVL7OyvbZvixVCl2RJorvetKqeCpwhsNl7JkRduttVRIfDKkCzBe2934olg1Q1L7i3fh7qx0JBBku0RdoodtjtXCX1gd54fd/uglsp6OCwlhodYZ6FCWGh1hosgQMJYUKHgEgKPUP/AM5lJeSwQ55Bq7MUIlRMxRFVERPSvnChQGToJG1lAU2tJWiW6oVy47e+CgRDmBlkRUUqkq127NvftT0h4UZ2EEIwpggKWsq0upx/n6UjOzcqQTz8yRJUaN099NueSd/PjDwophRPLekeGtYdj5MM5NKtw96VzipxBEB42k2AdKonfSHhQAwGAqGJD3180ixcdB2VcN0NZQRVtyzySHhQXsiKhWwqJa1O6NjjmicwoAeaRHctGQJltpn+3hChRLKI9HnGmJV1sgU0JUIeFFpHKclevTj7QogkCqJEq7ypt4QoUTsrpnGTUGgUXRusyTjSM9iKgDpqCKiFChQEexs+izw6yZwoicbC4apdTPZGdhQoZj9i8nURQoUKGCR4jChRCH//2Q==" alt="Profile Picture">Lesego&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      
+
+       
+		<div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button>Search</button>
+        </div>
+    </div>
+    <div id="main">
+	
+        <div id="sidebar">
+           
+            
+            <a href="#" class="link">Dashboard</a>
+            <a href="#" class="link">User Accounts</a>
+            <a href="#" class="link">News Updates</a>
+            <a href="#" class="link">Match Updates</a>
+            <a href="#" class="link">Media</a>
+            <a href="#" class="link">Tournaments</a>
+			<a href="#" class="link">Club Management</a>
+            
+        </div>
+		<div id="small-boxes">
+                <div class="small-box"></div>
+                <div class="small-box"></div>
+                <div class="small-box"></div>
+                <div class="small-box"></div>
+            </div>
+           <!-- ... existing code ... -->
+<button class="blue-box" onclick="window.location.href='teams.html'">Teams<br><br>16</button>
+<button class="blue-box" onclick="window.location.href='players.html'">Players<br><br>225</button>
+<button class="blue-box" onclick="window.location.href='coaches.html'">Coaches<br><br>30</button>
+<button class="blue-box" onclick="window.location.href='tournaments.html'">Tournaments<br><br>03</button>
+<!-- ... existing code ... -->
+
+            
+
+
+            <div style="width: 400px;">
+                <div style="position: relative; top: 100px; left: -650px; width: 500px; height: 300px;margin-left: -50px;">
+                    <canvas id="barChart"></canvas>
+                </div>
+                
+                <h4 style="color: black; background-color: #8AC5E6; padding: 5px 10px; border: 1px solid black; position: relative; right: 150px; top: -200px; max-width: 210px;">Setting and Customization</h4>
+                <ul style="list-style-type: circle; padding-right: 150px; margin-top: -200px; margin-left: -140px;">
+                    <li><a href="page1.html" style="text-decoration: none; color: inherit;">Time Zone</a></li><br>
+                    <li><a href="page2.html" style="text-decoration: none; color: inherit;">Logo and Branding</a></li><br>
+                    <li><a href="page3.html" style="text-decoration: none; color: inherit;">Social Media</a></li><br>
+                    <li><a href="page4.html" style="text-decoration: none; color: inherit;">LogOut</a></li>
+                </ul>
+                
+
+                <div id="pie-chart-container" style="position: relative; width: 200px; margin-top: -80px; margin-left: auto; margin-right: 140px;">
+                    <h5 style="color: black;  padding: 5px 10px; max-width: 200px;">Page Visits</h5>
+                    <canvas id="pieChart"></canvas>
+                </div>
+                
+                
+                
+            </div>
+    
+            <script>
+                const ctxBar = document.getElementById('barChart').getContext('2d');
+                const barChart = new Chart(ctxBar, {
+                    type: 'line', // Changed chart type to line
+                    data: {
+                        labels: ['Vsits a day', 'Social Media Followers','Subcribers', 'Queries'],
+                        datasets: [{
+                            label: 'ANALYTICS AND REPORTS',
+                            data: [12, 19, 3, 5, 2, 3],
+                            backgroundColor: '#0096FF',
+                            borderColor: '#0096FF',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>    
+            
+            <script>
+                // Assuming you have the data for the pie chart in this array
+                const data = [55, 20, 10, 15]; // Modify this with your actual data
+        
+                // Calculate the total
+                const totalVisits = data.reduce((acc, value) => acc + value, 0);
+        
+                // Calculate percentages
+                const percentages = data.map(value => ((value / totalVisits) * 100).toFixed(2));
+        
+                // Pie Chart
+                const ctxPie = document.getElementById('pieChart').getContext('2d');
+                const pieChart = new Chart(ctxPie, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Results', 'Fixtures', 'Logs', 'Tournaments'],
+                        datasets: [{
+                            label: 'Page Visits',
+                            data: percentages,
+                            backgroundColor: [
+                                '#D9D9D9',
+                                '#87BFDF',
+                                '#F28500',
+                                '#DAA068',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+    </div>
+</body>
+
+</html>
+
